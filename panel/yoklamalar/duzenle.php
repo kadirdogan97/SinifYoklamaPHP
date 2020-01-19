@@ -14,7 +14,7 @@ include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
 
 <?php 
 
-$sorgu = $baglanti->query("SELECT * FROM ogrenciler WHERE id =".(int)$_GET['id']); 
+$sorgu = $baglanti->query("SELECT yoklama_log.id, ogrenciler.ogr_no, ogrenciler.ad_soyad as ogr_ad_soyad, yoklama_log.tarih, yoklama_log.devamsizlik FROM yoklama_log INNER JOIN ogrenciler ON yoklama_log.ogr_id = ogrenciler.id WHERE yoklama_log.id=".(int)$_GET['id']);
 //id değeri ile düzenlenecek verileri veritabanından alacak sorgu
 
 $sonuc = $sorgu->fetch_assoc(); //sorgu çalıştırılıp veriler alınıyor
@@ -36,17 +36,17 @@ $sonuc = $sorgu->fetch_assoc(); //sorgu çalıştırılıp veriler alınıyor
 
         <tr>
             <td>Ad Soyad</td> 
-            <td><input type="text" name="ad_soyad" class="form-control" value="<?php echo $sonuc['ad_soyad']; ?>"></td>
+            <td><input type="text" name="ogr_ad_soyad" class="form-control" value="<?php echo $sonuc['ogr_ad_soyad']; ?>"></td>
         </tr>
 
         <tr>
-            <td>Ağ Adresi</td>
-            <td><input type="text" name="ag_adresi" class="form-control" value="<?php echo $sonuc['ag_adresi'];?>"></td>
+            <td>Tarih</td>
+            <td><input type="text" name="tarih" class="form-control" value="<?php echo $sonuc['tarih'];?>"></td>
         </tr>
 
         <tr>
-            <td>Parola</td> 
-            <td><input type="text" name="parola" class="form-control" value="<?php echo $sonuc['parola']; ?>"></td>
+            <td>Devamsızlık</td>
+            <td><input type="text" name="devamsizlik" class="form-control" value="<?php echo $sonuc['devamsizlik']; ?>"></td>
         </tr>
 
         <tr>
@@ -62,18 +62,11 @@ $sonuc = $sorgu->fetch_assoc(); //sorgu çalıştırılıp veriler alınıyor
 <?php 
 
 if ($_POST) {
-    
-    $ogr_no = $_POST['ogr_no']; 
-    $ad_soyad = $_POST['ad_soyad'];
-    $ag_adresi = $_POST['ag_adresi'];
-    $parola = $_POST['parola'];
-
-    if ($ogr_no<>"" && $ad_soyad<>"") { 
-        
-
-        if ($baglanti->query("UPDATE ogrenciler SET ogr_no = '$ogr_no', ad_soyad = '$ad_soyad', ag_adresi = '$ag_adresi', parola = '$parola' WHERE id =".$_GET['id'])) 
+    $devamsizlik = $_POST['devamsizlik'];
+    if ($devamsizlik<>"") {
+        if ($baglanti->query("UPDATE yoklama_log SET devamsizlik = '$devamsizlik' WHERE id =".$_GET['id']))
         {
-            header("location:ekle.php"); 
+            echo "<script type='text/javascript'>alert('Yoklama İşlemi Başarılı');window.location.replace(\"ekle.php\");</script>";
         }
         else
         {

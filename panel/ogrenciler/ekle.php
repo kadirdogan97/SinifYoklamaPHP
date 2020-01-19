@@ -1,5 +1,7 @@
 <?php 
-include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz. 
+include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
+$bolumler = $baglanti->query("SELECT * FROM bolumler");
+$dersler = $baglanti->query("SELECT * FROM dersler");
 ?>
 
 <!doctype html>
@@ -7,11 +9,14 @@ include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
 <head>
 <meta charset="utf-8">
 <title>ÖĞRENCİLER</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" /></head>
 <body>
 <div class="container">
-<div class="col-md-6">
+<div class="col-md-6" style="float:left">
 <form action="" method="post">
     
     <table class="table">
@@ -27,7 +32,7 @@ include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
         </tr>
 
         <tr>
-            <td>Ağ Adresi</td>
+            <td>Cihaz Kodu</td>
             <td><input type="text" name="ag_adresi" class="form-control" ></td>
         </tr>
 
@@ -38,7 +43,47 @@ include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
 
         <tr>
             <td>Bölüm</td>
-            <td><input type="text" name="bolum_id" class="form-control" ></td>
+            <!--            <td><input type="text" name="bolum_id" class="form-control" ></td>-->
+            <td>
+                <select name="bolum_id" class="form-control">
+                    <option value="0">Seçiniz</option>
+                    <?php
+                    while ($row=mysqli_fetch_array($bolumler)){?>
+                        <option value="<?php echo $row[0];?>" >
+                            <?php echo $row[1];?>
+                        </option>
+                        <?php
+                    }
+
+                    ?>
+                </select>
+
+
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>Dersler</td>
+            <!--            <td><input type="text" name="bolum_id" class="form-control" ></td>-->
+            <td>
+                <div class="form-group">
+
+                    <select name="ders_id[]" multiple class="form-control">
+                        <?php
+                        while ($row=mysqli_fetch_array($dersler)){?>
+                            <option value="<?php echo $row[0];?>" >
+                                <?php echo $row[1];?>
+                            </option>
+                            <?php
+                        }
+
+                        ?>
+                    </select>
+                </div>
+
+
+            </td>
         </tr>
 
         <tr>
@@ -62,19 +107,23 @@ if ($_POST) { // Sayfada post olup olmadığını kontrol ediyoruz.
     $ag_adresi = $_POST['ag_adresi']; 
     $parola = $_POST['parola']; 
     $bolum_id = $_POST['bolum_id'];
-
     if ($ogr_no<>"" && $ad_soyad<>""&& $ag_adresi<>""&& $parola<>""&& $bolum_id<>"") { 
     // Veri alanlarının boş olmadığını kontrol ettiriyoruz. Başka kontrollerde yapabilirsiniz.
         
          // Veri ekleme sorgumuzu yazıyoruz.
         if ($baglanti->query("INSERT INTO ogrenciler (ogr_no, ad_soyad, ag_adresi, parola, bolum_id) VALUES ('$ogr_no','$ad_soyad','$ag_adresi','$parola','$bolum_id')")) 
         {
+            $last_id = $baglanti->insert_id;
+            foreach ($_POST['ders_id'] as $ders){
+                $baglanti->query("INSERT INTO ogr_ders (ogr_id, ders_id) VALUES ('$last_id','$ders')");
+            }
             echo "Veri Eklendi"; // Eğer veri eklendiyse eklendi yazmasını sağlıyoruz.
         }
         else
         {
             echo "Hata oluştu";
         }
+
 
     }
 
@@ -92,7 +141,7 @@ if ($_POST) { // Sayfada post olup olmadığını kontrol ediyoruz.
         <th>ID</th>
         <th>Ogr No</th>
         <th>Ad Soyad</th>
-        <th>Ağ Adresi</th>
+        <th>Cihaz Kodu</th>
         <th>Parola</th>
         <th>Bölüm</th>
         <th></th>

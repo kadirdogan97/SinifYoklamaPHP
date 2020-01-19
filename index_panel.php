@@ -7,7 +7,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ogr']) ) {
     header("Location: panel/ogrenciler/ekle.php");  
 }
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ogr_gorevli']) ) {
-    header("Location: panel/ogr_gorevliler/ekle.php");  
+    header("Location: panel/ogr_gorevliler/ekle.php");
+}
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['yoklamalar']) ) {
+    header("Location: panel/yoklamalar/ekle.php");
 }
 
 
@@ -49,6 +52,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['ogr_gorevli']) ) {
                         <!-- Button -->
                         <div class="col-sm-12 controls">
                             <button id="ogr_gorevli" class="btn btn-success " type="submit" name="ogr_gorevli">Öğretim Görevlileri</button>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;float:left;margin-left:10px;" class="form-group" >
+                        <!-- Button -->
+                        <div class="col-sm-12 controls">
+                            <button id="yoklamalar" class="btn btn-success " type="submit" name="yoklamalar">Yoklamalar</button>
                         </div>
                     </div>
                 </form>

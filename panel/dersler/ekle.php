@@ -1,5 +1,7 @@
 <?php 
-include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz. 
+include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
+$ogr_gorevlileri=$baglanti->query("SELECT * FROM ogr_gorevli");
+$bolumler=$baglanti->query("SELECT * FROM bolumler");
 ?>
 
 <!doctype html>
@@ -11,7 +13,7 @@ include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
 </head>
 <body>
 <div class="container">
-<div class="col-md-6">
+<div class="col-md-6" style="float: left">
 <form action="" method="post">
     
     <table class="table">
@@ -23,7 +25,23 @@ include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
 
         <tr>
             <td>Öğretim Görevlisi</td>
-            <td><input type="text" name="ogr_gorevli_id" class="form-control" ></td>
+            <!--<td><input type="text" name="ogr_gorevli_id" class="form-control" ></td>-->
+            <td>
+                <select name="ogr_gorevli_id" class="form-control">
+                    <option value="0">Seçiniz</option>
+                    <?php
+                    while ($row=mysqli_fetch_array($ogr_gorevlileri)){?>
+                        <option value="<?php echo $row[0];?>" >
+                            <?php echo $row[1];?>
+                        </option>
+                    <?php
+                    }
+
+                    ?>
+                </select>
+
+
+            </td>
         </tr>
 
         <tr>
@@ -43,7 +61,23 @@ include("../vt.php"); // veritabanı bağlantımızı sayfamıza ekliyoruz.
 
         <tr>
             <td>Bölüm</td>
-            <td><input type="text" name="bolum_id" class="form-control" ></td>
+<!--            <td><input type="text" name="bolum_id" class="form-control" ></td>-->
+            <td>
+                <select name="bolum_id" class="form-control">
+                    <option value="0">Seçiniz</option>
+                    <?php
+                    while ($row=mysqli_fetch_array($bolumler)){?>
+                        <option value="<?php echo $row[0];?>" >
+                            <?php echo $row[1];?>
+                        </option>
+                        <?php
+                    }
+
+                    ?>
+                </select>
+
+
+            </td>
         </tr>
 
         <tr>
@@ -89,6 +123,7 @@ if ($_POST) { // Sayfada post olup olmadığını kontrol ediyoruz.
 ?>
 </div>
 <!-- ############################################################## -->
+
 
 <!-- Veritabanına eklenmiş verileri sıralamak için önce üst kısmı hazırlayalım. -->
 <div class="col-md-7">
