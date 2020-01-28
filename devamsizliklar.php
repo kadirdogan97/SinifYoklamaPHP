@@ -24,7 +24,7 @@
             $barkod = $row['barkod'];
             $yoklama_aktif = $row['yoklama_aktif'];
         }
-        $result = mysqli_query($db, "SELECT yoklama_log.id, ogrenciler.ogr_no, ogrenciler.ad_soyad as ogr_ad_soyad, dersler.ders_adi, yoklama_log.tarih as yoklama_tarih, yoklama_log.devamsizlik FROM yoklama_log INNER JOIN ogrenciler ON yoklama_log.ogr_id = ogrenciler.id INNER JOIN dersler ON yoklama_log.ders_id = dersler.id WHERE yoklama_log.ogr_id = '$ogr_id' AND yoklama_log.ders_id = '$ders_id'");
+        $result = mysqli_query($db, "SELECT yoklama_log.id, ogrenciler.ogr_no, ogrenciler.ad_soyad as ogr_ad_soyad, dersler.ders_adi, yoklama_log.tarih as yoklama_tarih, yoklama_log.devamsizlik FROM yoklama_log INNER JOIN ogrenciler ON yoklama_log.ogr_id = ogrenciler.id INNER JOIN dersler ON yoklama_log.ders_id = dersler.id WHERE yoklama_log.ogr_id = '$ogr_id' AND yoklama_log.ders_id = '$ders_id' ORDER BY yoklama_log.tarih DESC");
 
         $array = array();
         while($row = mysqli_fetch_assoc($result)){

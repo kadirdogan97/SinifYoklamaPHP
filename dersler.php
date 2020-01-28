@@ -12,7 +12,7 @@
     $querty="SELECT 
     dersler.id,
     ogr_gorevli.ad_soyad as ogr_gorevli_ad_soyad,
-    ogr_gorevli.mail,
+    ogr_gorevli.mail as ogr_gorevli_mail,
     dersler.ders_adi,
     dersler.ders_gunu,
     dersler.baslangic_saati,

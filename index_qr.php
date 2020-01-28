@@ -1,7 +1,8 @@
 <?php
     include ("panel/vt.php");
 
-    $tarih = date("d/m/Y");
+    $tarih = date("d/m/Y/H:m");
+    echo $tarih;
     if(isset($_GET['ders_id'])){
         $ders_id = $_GET['ders_id'];
 
